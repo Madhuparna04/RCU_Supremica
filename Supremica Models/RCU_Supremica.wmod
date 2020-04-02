@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module xmlns="http://waters.sourceforge.net/xsd/module" xmlns:B="http://waters.sourceforge.net/xsd/base" Name="RCU_Supremica">
+<EventDeclList>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_irq_enter"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_irq_exit_outermost"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_irq_exit"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_irq_enter_outermost"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_user_enter"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_idle_enter"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_user_exit"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_idle_exit"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_nmi_enter"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_nmi_exit"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_nmi_enter_outermost"/>
+<EventDecl Kind="CONTROLLABLE" Name="rcu_nmi_exit_outermost"/>
+<EventDecl Kind="PROPOSITION" Name=":accepting"/>
+</EventDeclList>
+<ComponentList>
+<SimpleComponent Kind="PLANT" Name="user_mode_and_IRQ_or_NMI">
+<Graph>
+<NodeList>
+<SimpleNode Initial="true" Name="user_mode">
+<PointGeometry>
+<Point X="128" Y="112"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="IRQ_or_NMI">
+<PointGeometry>
+<Point X="320" Y="144"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="IRQ_or_NMI" Target="user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_exit_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_exit_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="-5" Y="13"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="196" Y="176"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="user_mode" Target="IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_enter_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="-23" Y="-43"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="230" Y="83"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI" Target="IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter"/>
+<SimpleIdentifier Name="rcu_nmi_exit"/>
+<SimpleIdentifier Name="rcu_nmi_enter"/>
+<SimpleIdentifier Name="rcu_irq_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="19" Y="-42"/>
+</LabelGeometry>
+</LabelBlock>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+<SimpleComponent Kind="PLANT" Name="kernel_and_IRQ_or_NMI">
+<Graph>
+<NodeList>
+<SimpleNode Initial="true" Name="kernel_mode">
+<PointGeometry>
+<Point X="176" Y="240"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="IRQ_or_NMI">
+<PointGeometry>
+<Point X="448" Y="256"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="kernel_mode" Target="IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_enter_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="-54" Y="-53"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="314" Y="199"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI" Target="kernel_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_exit_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_exit_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="-65" Y="14"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="321" Y="313"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI" Target="IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter"/>
+<SimpleIdentifier Name="rcu_irq_exit"/>
+<SimpleIdentifier Name="rcu_nmi_enter"/>
+<SimpleIdentifier Name="rcu_nmi_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="37" Y="-33"/>
+</LabelGeometry>
+</LabelBlock>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+<SimpleComponent Kind="PLANT" Name="idle_and_IRQ_or_NMI">
+<Graph>
+<NodeList>
+<SimpleNode Initial="true" Name="idle">
+<PointGeometry>
+<Point X="160" Y="128"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="IRQ_or_NMI">
+<PointGeometry>
+<Point X="352" Y="160"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="IRQ_or_NMI" Target="idle">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_exit_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_exit_outermost"/>
+</LabelBlock>
+<SplineGeometry>
+<Point X="240" Y="196"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle" Target="IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_enter_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="-17" Y="-45"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="262" Y="99"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI" Target="IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_nmi_enter"/>
+<SimpleIdentifier Name="rcu_irq_enter"/>
+<SimpleIdentifier Name="rcu_irq_exit"/>
+<SimpleIdentifier Name="rcu_nmi_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="31" Y="-22"/>
+</LabelGeometry>
+</LabelBlock>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+<SimpleComponent Kind="PLANT" Name="kernel_and_user_mode">
+<Graph>
+<NodeList>
+<SimpleNode Initial="true" Name="kernel_mode">
+<PointGeometry>
+<Point X="144" Y="160"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="user_mode">
+<PointGeometry>
+<Point X="352" Y="192"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="kernel_mode" Target="user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_user_enter"/>
+<LabelGeometry Anchor="NW">
+<Point X="-5" Y="-27"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="256" Y="125"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="user_mode" Target="kernel_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_user_exit"/>
+</LabelBlock>
+<SplineGeometry>
+<Point X="224" Y="232"/>
+</SplineGeometry>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+<SimpleComponent Kind="PLANT" Name="kernel_and_idle">
+<Graph>
+<NodeList>
+<SimpleNode Initial="true" Name="kernel_mode">
+<PointGeometry>
+<Point X="80" Y="128"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="idle">
+<PointGeometry>
+<Point X="288" Y="144"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="kernel_mode" Target="idle">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_enter"/>
+<LabelGeometry Anchor="NW">
+<Point X="-22" Y="-38"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="187" Y="89"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle" Target="kernel_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_exit"/>
+</LabelBlock>
+<SplineGeometry>
+<Point X="181" Y="185"/>
+</SplineGeometry>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+<SimpleComponent Kind="PLANT" Name="rcu_is_watching_and_rcu_in_eqs">
+<Graph>
+<NodeList>
+<SimpleNode Initial="true" Name="rcu_is_watching">
+<PointGeometry>
+<Point X="160" Y="176"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="rcu_in_eqs">
+<PointGeometry>
+<Point X="464" Y="176"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="rcu_is_watching" Target="rcu_in_eqs">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_enter"/>
+<SimpleIdentifier Name="rcu_user_enter"/>
+<SimpleIdentifier Name="rcu_irq_exit_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_exit_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="-44" Y="-74"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="295" Y="104"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="rcu_in_eqs" Target="rcu_is_watching">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_exit"/>
+<SimpleIdentifier Name="rcu_user_exit"/>
+<SimpleIdentifier Name="rcu_irq_enter_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_enter_outermost"/>
+</LabelBlock>
+<SplineGeometry>
+<Point X="320" Y="254"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="rcu_is_watching" Target="rcu_is_watching">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_exit"/>
+<SimpleIdentifier Name="rcu_irq_enter"/>
+<SimpleIdentifier Name="rcu_nmi_enter"/>
+<SimpleIdentifier Name="rcu_nmi_exit"/>
+</LabelBlock>
+<SplineGeometry>
+<Point X="88" Y="237"/>
+</SplineGeometry>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+<SimpleComponent Kind="PLANT" Name="idle_and_IRQ_or_NMI||kernel_and_idle||kernel_and_IRQ_or_NMI||kernel_and_user_mode||rcu_is_watching_and_rcu_in_eqs||user_mode_and_IRQ_or_NMI">
+<Graph>
+<NodeList>
+<SimpleNode Name="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI">
+<EventList>
+<SimpleIdentifier Name=":accepting"/>
+</EventList>
+<PointGeometry>
+<Point X="159" Y="327"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="5" Y="5"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="IRQ_or_NMI.idle.IRQ_or_NMI.user_mode.rcu_in_eqs.IRQ_or_NMI">
+<EventList>
+<SimpleIdentifier Name=":accepting"/>
+</EventList>
+<PointGeometry>
+<Point X="292" Y="290"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="5" Y="5"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI">
+<EventList>
+<SimpleIdentifier Name=":accepting"/>
+</EventList>
+<PointGeometry>
+<Point X="326" Y="157"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="47" Y="6"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="idle.idle.kernel_mode.kernel_mode.rcu_in_eqs.user_mode">
+<EventList>
+<SimpleIdentifier Name=":accepting"/>
+</EventList>
+<PointGeometry>
+<Point X="63" Y="228"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="-22" Y="-11"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Initial="true" Name="idle.kernel_mode.kernel_mode.kernel_mode.rcu_is_watching.user_mode">
+<EventList>
+<SimpleIdentifier Name=":accepting"/>
+</EventList>
+<PointGeometry>
+<Point X="96" Y="98"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="5" Y="5"/>
+</LabelGeometry>
+</SimpleNode>
+<SimpleNode Name="idle.kernel_mode.kernel_mode.user_mode.rcu_in_eqs.user_mode">
+<EventList>
+<SimpleIdentifier Name=":accepting"/>
+</EventList>
+<PointGeometry>
+<Point X="226" Y="63"/>
+</PointGeometry>
+<LabelGeometry Anchor="NW">
+<Point X="5" Y="5"/>
+</LabelGeometry>
+</SimpleNode>
+</NodeList>
+<EdgeList>
+<Edge Source="idle.idle.kernel_mode.kernel_mode.rcu_in_eqs.user_mode" Target="idle.kernel_mode.kernel_mode.kernel_mode.rcu_is_watching.user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="76" Y="161"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle.idle.kernel_mode.kernel_mode.rcu_in_eqs.user_mode" Target="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_enter_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="108" Y="280"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle.kernel_mode.kernel_mode.kernel_mode.rcu_is_watching.user_mode" Target="idle.idle.kernel_mode.kernel_mode.rcu_in_eqs.user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_enter"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="55" Y="156"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle.kernel_mode.kernel_mode.kernel_mode.rcu_is_watching.user_mode" Target="idle.kernel_mode.kernel_mode.user_mode.rcu_in_eqs.user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_user_enter"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="159" Y="76"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle.kernel_mode.kernel_mode.user_mode.rcu_in_eqs.user_mode" Target="idle.kernel_mode.kernel_mode.kernel_mode.rcu_is_watching.user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_user_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="154" Y="56"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="idle.kernel_mode.kernel_mode.user_mode.rcu_in_eqs.user_mode" Target="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_enter_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="278" Y="107"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI" Target="idle.idle.kernel_mode.kernel_mode.rcu_in_eqs.user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_exit_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_exit_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="93" Y="294"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI" Target="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter"/>
+<SimpleIdentifier Name="rcu_irq_exit"/>
+<SimpleIdentifier Name="rcu_nmi_enter"/>
+<SimpleIdentifier Name="rcu_nmi_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="143" Y="385"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI" Target="IRQ_or_NMI.idle.IRQ_or_NMI.user_mode.rcu_in_eqs.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_user_enter"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="232" Y="332"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.idle.IRQ_or_NMI.user_mode.rcu_in_eqs.IRQ_or_NMI" Target="IRQ_or_NMI.idle.IRQ_or_NMI.kernel_mode.rcu_is_watching.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_user_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="226" Y="312"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.idle.IRQ_or_NMI.user_mode.rcu_in_eqs.IRQ_or_NMI" Target="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="332" Y="230"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI" Target="idle.kernel_mode.kernel_mode.user_mode.rcu_in_eqs.user_mode">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_exit_outermost"/>
+<SimpleIdentifier Name="rcu_nmi_exit_outermost"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="293" Y="92"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI" Target="IRQ_or_NMI.idle.IRQ_or_NMI.user_mode.rcu_in_eqs.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_idle_enter"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="312" Y="224"/>
+</SplineGeometry>
+</Edge>
+<Edge Source="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI" Target="IRQ_or_NMI.kernel_mode.IRQ_or_NMI.user_mode.rcu_is_watching.IRQ_or_NMI">
+<LabelBlock>
+<SimpleIdentifier Name="rcu_irq_enter"/>
+<SimpleIdentifier Name="rcu_irq_exit"/>
+<SimpleIdentifier Name="rcu_nmi_enter"/>
+<SimpleIdentifier Name="rcu_nmi_exit"/>
+<LabelGeometry Anchor="NW">
+<Point X="0" Y="10"/>
+</LabelGeometry>
+</LabelBlock>
+<SplineGeometry>
+<Point X="384" Y="140"/>
+</SplineGeometry>
+</Edge>
+</EdgeList>
+</Graph>
+</SimpleComponent>
+</ComponentList>
+</Module>
